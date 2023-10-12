@@ -1,6 +1,16 @@
 name: '🔂 Surge PR Preview'
 description: 'Preview website in surge.sh for every pull request'
-author: 'afc163'
+name: 'Github Action Notification'
+description: 'Github Action Notification with Discord and Slack'
+author: 'hunghg255'
+branding:
+  icon: 'monitor'
+  color: 'yellow'
+
+runs:
+  using: 'node16'
+  main: 'lib/index.js'
+
 inputs:
   surge_token:
     description: 'surge.sh token'
@@ -28,9 +38,3 @@ inputs:
 outputs:
   preview_url:
     description: 'The url for the related PR preview'
-runs:
-  using: node16
-  main: 'dist/index.js'
-branding:
-  icon: 'monitor'
-  color: 'yellow'
