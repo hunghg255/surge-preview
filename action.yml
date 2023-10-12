@@ -1,7 +1,5 @@
 name: '🔂 Surge PR Preview'
 description: 'Preview website in surge.sh for every pull request'
-name: 'Github Action Notification'
-description: 'Github Action Notification with Discord and Slack'
 author: 'hunghg255'
 branding:
   icon: 'monitor'
