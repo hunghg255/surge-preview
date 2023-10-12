@@ -1,0 +1,3 @@
+{
+  "extends": ["@hunghg255/eslint-config-ts"]
+}
