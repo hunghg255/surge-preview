@@ -174,6 +174,9 @@ ${getCommentFooter()}
       await exec('npm install');
       await exec('npm run build');
     }
+
+    await exec('cp', [`${dist}/index.html`, `${dist}/200.html`]);
+
     const duration = (Date.now() - startTime) / 1000;
     core.info(`Build time: ${duration} seconds`);
     core.info(`Deploy to ${url}`);

@@ -30,5 +30,5 @@ export const formatImage = ({
 };
 
 export const getCommentFooter = () => {
-  return '<sub>🤖 By [surge-preview](https://github.com/afc163/surge-preview)</sub>';
+  return '<sub>🤖 By [surge-preview](https://github.com/hunghg255/surge-preview)</sub>';
 };
