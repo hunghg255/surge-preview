@@ -54,7 +54,7 @@ export const deployBranch = async ({ surgeToken, dist, failOnError }: any) => {
 
   try {
     await execSurgeCommand({
-      command: ['surge', `./${dist}`, '--token', surgeToken, '--cleanup'],
+      command: ['surge', 'teardown', url, '--token', surgeToken],
     });
   } catch (error: any) {
     fail?.(error);
