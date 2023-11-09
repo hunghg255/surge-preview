@@ -48,11 +48,19 @@ export const deployBranch = async ({ surgeToken, dist, failOnError }: any) => {
     core.info(`Build time: ${duration} seconds`);
     core.info(`Deploy to ${url}`);
     core.setSecret(surgeToken);
+  } catch (error: any) {
+    fail?.(error);
+  }
 
+  try {
     await execSurgeCommand({
       command: ['surge', `./${dist}`, '--token', surgeToken, '--cleanup'],
     });
+  } catch (error: any) {
+    fail?.(error);
+  }
 
+  try {
     await execSurgeCommand({
       command: ['surge', `./${dist}`, url, '--token', surgeToken],
     });
