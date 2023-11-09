@@ -92,6 +92,7 @@ jobs:
 - `dist`: dist folder deployed to [surge.sh](https://surge.sh/).
 - `failOnError`: Set `failed` if a deployment throws error, defaults to `false`.
 - `teardown`: Determines if the preview instance will be torn down on PR close, defaults to `false`.
+- `preview_branch`: deploy to a branch, defaults to `false`.
 
 ### Outputs
 

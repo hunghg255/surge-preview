@@ -33,6 +33,11 @@ inputs:
     description: 'Determines if the preview instance will be torn down on PR close'
     default: 'false'
     required: false
+  preview_branch:
+    description: 'Determines if the current branch is a preview branch'
+    default: 'false'
+    required: false
+
 outputs:
   preview_url:
     description: 'The url for the related PR preview'
