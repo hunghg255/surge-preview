@@ -2,7 +2,9 @@
 
 A GitHub action that preview website in [surge.sh](https://surge.sh/) for your pull requests.
 
-<img width="800" alt="image" src="./assets/demo.png">
+<img width="800" alt="image" src="./assets/deploying.png">
+
+<img width="800" alt="image" src="./assets/success.png">
 
 ### Pros
 
