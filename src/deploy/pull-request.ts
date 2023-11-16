@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import * as core from '@actions/core';
 import { exec } from '@actions/exec';
 import * as github from '@actions/github';
+import { renderBase64 } from 'hqr';
 
 import { comment } from '../commentToPullRequest';
 import { execSurgeCommand, formatImage, getCommentFooter } from '../helpers';
@@ -78,11 +79,16 @@ export const deployPullRequest = async ({
     core.info('error message:');
     core.info(JSON.stringify(err, null, 2));
     commentIfNotForkedRepo(`
+${formatImage({
+  buildingLogUrl,
+  gitCommitSha,
+  url: `https://${url}`,
+  status: '❌ Failed',
+})}
+
 😭 Deploy PR Preview ${gitCommitSha} failed. [Build logs](https://github.com/${
       github.context.repo.owner
     }/${github.context.repo.repo}/actions/runs/${github.context.runId})
-
-
 
 ${getCommentFooter()}
     `);
@@ -138,7 +144,12 @@ ${getCommentFooter()}
       });
 
       return commentIfNotForkedRepo(`
-:recycle: [PR Preview](https://${url}) ${gitCommitSha} has been successfully destroyed since this PR has been closed.
+${formatImage({
+  buildingLogUrl,
+  gitCommitSha,
+  url: `https://${url}`,
+  status: ':recycle: Destroyed',
+})}
 
 ${getCommentFooter()}
       `);
@@ -150,11 +161,9 @@ ${getCommentFooter()}
   commentIfNotForkedRepo(`
 ${formatImage({
   buildingLogUrl,
-  imageUrl:
-    'https://user-images.githubusercontent.com/507615/90240294-8d2abd00-de5b-11ea-8140-4840a0b2d571.gif',
   gitCommitSha,
   url: `https://${url}`,
-  status: 'Deploying',
+  status: '⌛ Deploying',
 })}
 
 ${getCommentFooter()}
@@ -168,16 +177,14 @@ ${getCommentFooter()}
         core.info(`RUN: ${command}`);
         await exec(command);
       }
-      const a =
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAklEQVR4AewaftIAAAKESURBVO3BQW4kSQwEQQ+i/v9lXx15SiFRLQ21oFn8whqjWKMUa5RijVKsUYo1SrFGKdYoD99Iwm9S6ZLQqdxIQqfSJeE3qZwUa5RijVKsUR4uqXxSEm4koVPpktCp3FD5pCTcKNYoxRqlWKM8vJSEGyqflISTJHQqN5JwQ+WNYo1SrFGKNcrDH6PSJaFT6ZLwlxRrlGKNUqxRHoZT6ZJwkoS/rFijFGuUYo3y8JLKT0pCp9IloVPpkvCGym8q1ijFGqVYozxcSsL/WRL+pWKNUqxRijVK/MIao1ijFGuUYo3y8I0knKicJOGGyicloVM5SUKn0iXhDZWTYo1SrFGKNcrDN1S6JJwkoVPpktCpdEk4UemS0KncSMJPUrlRrFGKNUqxRnn4RhJOktCpdEnoVLoknKh8UhJOVLokdConSXijWKMUa5RijfJwSaVLQpeETqVLQqfyhkqXhBsqXRLeUHmjWKMUa5RijfLwkkqXhBOVLgmdSpeETuWGSpeEE5U3ktCp3CjWKMUapVijPHxD5YbKDZU3ktCpdEnoVG4k4UTlJAmdykmxRinWKMUa5eEbSfhNKp1Kl4ROpUtCp9Il4Tep3CjWKMUapVijPFxS+aQknCShU+mS8IZKl4QTlROVN4o1SrFGKdYoDy8l4YbKJ6l0SeiS0KlMVqxRijVKsUZ5GE6lS8KJykkSTlS6JHRJ6FS6JJyonBRrlGKNUqxRHv4YlS4JN1S6JHRJeEPljWKNUqxRijXKw0sqPykJnUqn0iWhU+mS0KlMUqxRijVKsUZ5uJSEfykJnconJeFE5UYSOpWTYo1SrFGKNUr8whqjWKMUa5RijVKsUYo1SrFGKdYo/wGkAAXlwY+9dgAAAABJRU5ErkJggg==';
-      fs.writeFileSync(`${dist}/qr.png`, a.replace('data:image/png;base64,', ''), 'base64');
     } else {
       await exec('npm install');
       await exec('npm run build');
-      const a =
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAklEQVR4AewaftIAAAKESURBVO3BQW4kSQwEQQ+i/v9lXx15SiFRLQ21oFn8whqjWKMUa5RijVKsUYo1SrFGKdYoD99Iwm9S6ZLQqdxIQqfSJeE3qZwUa5RijVKsUR4uqXxSEm4koVPpktCp3FD5pCTcKNYoxRqlWKM8vJSEGyqflISTJHQqN5JwQ+WNYo1SrFGKNcrDH6PSJaFT6ZLwlxRrlGKNUqxRHoZT6ZJwkoS/rFijFGuUYo3y8JLKT0pCp9IloVPpkvCGym8q1ijFGqVYozxcSsL/WRL+pWKNUqxRijVK/MIao1ijFGuUYo3y8I0knKicJOGGyicloVM5SUKn0iXhDZWTYo1SrFGKNcrDN1S6JJwkoVPpktCpdEk4UemS0KncSMJPUrlRrFGKNUqxRnn4RhJOktCpdEnoVLoknKh8UhJOVLokdConSXijWKMUa5RijfJwSaVLQpeETqVLQqfyhkqXhBsqXRLeUHmjWKMUa5RijfLwkkqXhBOVLgmdSpeETuWGSpeEE5U3ktCp3CjWKMUapVijPHxD5YbKDZU3ktCpdEnoVG4k4UTlJAmdykmxRinWKMUa5eEbSfhNKp1Kl4ROpUtCp9Il4Tep3CjWKMUapVijPFxS+aQknCShU+mS8IZKl4QTlROVN4o1SrFGKdYoDy8l4YbKJ6l0SeiS0KlMVqxRijVKsUZ5GE6lS8KJykkSTlS6JHRJ6FS6JJyonBRrlGKNUqxRHv4YlS4JN1S6JHRJeEPljWKNUqxRijXKw0sqPykJnUqn0iWhU+mS0KlMUqxRijVKsUZ5uJSEfykJnconJeFE5UYSOpWTYo1SrFGKNUr8whqjWKMUa5RijVKsUYo1SrFGKdYo/wGkAAXlwY+9dgAAAABJRU5ErkJggg==';
-      fs.writeFileSync(`${dist}/qr.png`, a.replace('data:image/png;base64,', ''), 'base64');
     }
+
+    const qrUrl = await renderBase64(`https://${url}`, { width: 200, height: 200 });
+
+    fs.writeFileSync(`${dist}/qr.png`, qrUrl.replace('data:image/png;base64,', ''), 'base64');
 
     await exec('cp', [`${dist}/index.html`, `${dist}/200.html`]);
 
@@ -191,17 +198,12 @@ ${getCommentFooter()}
     });
 
     commentIfNotForkedRepo(`
-🎊 PR Preview ${gitCommitSha} has been successfully built and deployed to https://${url}
-
-:clock1: Build time: **${duration}s**
-
 ${formatImage({
   buildingLogUrl,
-  imageUrl:
-    'https://user-images.githubusercontent.com/507615/90250366-88233900-de6e-11ea-95a5-84f0762ffd39.png',
+  qrUrl: `https://${url}/qr.png`,
   gitCommitSha,
   url: `https://${url}`,
-  status: 'Done',
+  status: '✅ Ready',
   buildTime: `${duration}s`,
 })}
 

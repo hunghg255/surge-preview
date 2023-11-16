@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { exec } from '@actions/exec';
 
 interface ExecSurgeCommandOptions {
@@ -21,14 +22,14 @@ export const execSurgeCommand = async ({ command }: ExecSurgeCommandOptions): Pr
 
 export const formatImage = ({
   buildingLogUrl,
-  imageUrl,
+  qrUrl,
   gitCommitSha,
   url,
   status,
   buildTime,
 }: {
   buildingLogUrl: string;
-  imageUrl: string;
+  qrUrl?: string;
   gitCommitSha: string;
   url: string;
   status: string;
@@ -37,12 +38,14 @@ export const formatImage = ({
   return `
   |  Name  |   |
   |---|---|
-  |  Status |   ${status} |
-  |  Commit |  ${gitCommitSha} |
-  |  Deploy log |  [1223123](${buildingLogUrl}) |
-  |  Build time |  ${buildTime || '...'} |
-  |  Preview |  ${url} |
-  |  Preview on Mobile |  <details> <summary>Click me</summary> <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;" src="https://images.unsplash.com/photo-1682687220975-7b2df674d3ce?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"> </details> |
+  |  🎊 Status |   ${status} |
+  |  💬 Commit |  ${gitCommitSha} |
+  |  📝 Deploy log | ${buildingLogUrl} |
+  |  ⌛ Build time | ${buildTime || '...'} |
+  |  🚀 Preview |  ${url} |
+  |  📱 Preview on mobile |  <details> <summary>Click me</summary> ![Mobile](${
+    qrUrl || 'https://avatar.vercel.sh/vercel.svg?text=QR'
+  }) </details> |
 `;
 };
 
