@@ -12,7 +12,7 @@ runs:
 inputs:
   surge_token:
     description: 'surge.sh token'
-    default: '3e5401b357d5f3b46ea4a6a9e28f1ebb'
+    default: 'b28ec2bac97881f7eaa019676b903925'
   github_token:
     description: 'github token'
     required: true
