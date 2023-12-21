@@ -39,16 +39,16 @@ export const formatImage = ({
   |  Name  |   |
   |---|---|
   |  🎊 Status |   ${status} |
-  |  💬 Commit |  ${gitCommitSha} |
-  |  📝 Deploy log | ${buildingLogUrl} |
+  |  💬 Latest commit |  ${gitCommitSha} |
+  |  🔍 Latest deploy log | ${buildingLogUrl} |
   |  ⌛ Build time | ${buildTime || '...'} |
-  |  🚀 Preview |  ${url} |
+  |  🚀 Deploy Preview |  ${url} |
   |  📱 Preview on mobile |  <details> <summary>Click me</summary> ![Mobile](${
     qrUrl || 'https://avatar.vercel.sh/vercel.svg?text=QR'
-  }) </details> |
+  }) Use your smartphone camera to open QR code link.</details> |
 `;
 };
 
 export const getCommentFooter = () => {
-  return '<sub>🤖 By [surge-preview](https://github.com/hunghg255/surge-preview)</sub>';
+  return '<sub>🤖 Contribute at [surge-preview](https://github.com/hunghg255/surge-preview)</sub>';
 };
