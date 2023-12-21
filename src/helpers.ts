@@ -43,9 +43,9 @@ export const formatImage = ({
   |  🔍 Latest deploy log | ${buildingLogUrl} |
   |  ⌛ Build time | ${buildTime || '...'} |
   |  🚀 Deploy Preview |  ${url} |
-  |  📱 Preview on mobile |  <details> <summary>Click me</summary> ![Mobile](${
+  |  📱 Preview on mobile |  <details> <summary>Click me</summary><p><i>Use your smartphone camera to open QR code link.</i></p>![Mobile](${
     qrUrl || 'https://avatar.vercel.sh/vercel.svg?text=QR'
-  }) Use your smartphone camera to open QR code link.</details> |
+  }) </details> |
 `;
 };
 

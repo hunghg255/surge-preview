@@ -13,7 +13,7 @@ import { comment } from '../commentToPullRequest';
 import { execSurgeCommand, formatImage, getCommentFooter } from '../helpers';
 
 let failOnErrorGlobal = false;
-let fail: (err: Error) => void;
+let fail: (err: Error, duration?: number) => void;
 
 export const deployPullRequest = async ({
   surgeToken,
@@ -75,20 +75,17 @@ export const deployPullRequest = async ({
     });
   };
 
-  fail = (err: Error) => {
+  fail = (err: Error, duration?: number) => {
     core.info('error message:');
     core.info(JSON.stringify(err, null, 2));
     commentIfNotForkedRepo(`
 ${formatImage({
   buildingLogUrl,
   gitCommitSha,
+  buildTime: `${duration || 0}s`,
   url: `https://${url}`,
   status: '❌ Failed',
 })}
-
-😭 Deploy PR Preview ${gitCommitSha} failed. [Build logs](https://github.com/${
-      github.context.repo.owner
-    }/${github.context.repo.repo}/actions/runs/${github.context.runId})
 
 ${getCommentFooter()}
     `);
@@ -210,6 +207,8 @@ ${formatImage({
 ${getCommentFooter()}
     `);
   } catch (error: any) {
-    fail?.(error);
+    const duration = (Date.now() - startTime) / 1000;
+
+    fail?.(error, duration);
   }
 };
