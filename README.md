@@ -1,6 +1,18 @@
-# Surge PR Preview
+<p align="center">
+<a href="https://www.npmjs.com/package/surge-preview" target="_blank" rel="noopener noreferrer">
+<img src="https://api.iconify.design/simple-icons:githubactions.svg?color=%23cefdb4" alt="logo" width='100'/></a>
+</p>
 
-A GitHub action that preview website in [surge.sh](https://surge.sh/) for your pull requests.
+<p align="center">
+  A GitHub action that preview website in <a href="https://surge.sh/">surge.sh</a> for your pull requests.
+</p>
+
+<p align="center">
+  <a href="https://github.com/hunghg255/surge-preview/graphs/contributors" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg" alt="Contributors" /></a>
+  <a href="https://github.com/hunghg255/surge-preview/blob/main/LICENSE" target="_blank" rel="noopener noreferrer"><img src="https://badgen.net/github/license/hunghg255/surge-preview" alt="License" /></a>
+</p>
+
+## Preview
 
 <img width="800" alt="image" src="./assets/deploying.png">
 
