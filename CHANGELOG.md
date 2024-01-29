@@ -1,3 +1,9 @@
+## [v1.0.4](https://github.com/hunghg255/surge-preview/compare/v1.0.3...v1.0.4) - 2024-01-29
+### &nbsp;&nbsp;&nbsp;🏡 Chores
+
+- Update CHANGELOG.md &nbsp;-&nbsp; by **hunghg255** [<samp>(f9514)</samp>](https://github.com/hunghg255/surge-preview/commit/f951430)
+- Update link qr &nbsp;-&nbsp; by **hunghg255** [<samp>(555ef)</samp>](https://github.com/hunghg255/surge-preview/commit/555efa6)
+- Release v1.0.4 &nbsp;-&nbsp; by **hunghg255** [<samp>(e2fd7)</samp>](https://github.com/hunghg255/surge-preview/commit/e2fd7fd)
 ## [v1.0.3](https://github.com/hunghg255/surge-preview/compare/v1.0.2...v1.0.3) - 2023-12-21
 ### &nbsp;&nbsp;&nbsp;📖 Documentation
 
