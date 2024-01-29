@@ -1,13 +1,9 @@
 /* eslint-disable indent */
 /* eslint-disable unicorn/consistent-destructuring */
 /* eslint-disable unicorn/no-null */
-
-import fs from 'node:fs';
-
 import * as core from '@actions/core';
 import { exec } from '@actions/exec';
 import * as github from '@actions/github';
-import { renderBase64 } from 'hqr';
 
 import { comment } from '../commentToPullRequest';
 import { execSurgeCommand, formatImage, getCommentFooter } from '../helpers';
@@ -179,10 +175,6 @@ ${getCommentFooter()}
       await exec('npm run build');
     }
 
-    const qrUrl = await renderBase64(`https://${url}`, { width: 200, height: 200 });
-
-    fs.writeFileSync(`${dist}/qr.png`, qrUrl.replace('data:image/png;base64,', ''), 'base64');
-
     await exec('cp', [`${dist}/index.html`, `${dist}/200.html`]);
 
     const duration = (Date.now() - startTime) / 1000;
@@ -197,7 +189,7 @@ ${getCommentFooter()}
     commentIfNotForkedRepo(`
 ${formatImage({
   buildingLogUrl,
-  qrUrl: `https://${url}/qr.png`,
+  qrUrl: `https://avatar1.vercel.app/qr/${encodeURIComponent(`https://${url}`)}`,
   gitCommitSha,
   url: `https://${url}`,
   status: '✅ Ready',

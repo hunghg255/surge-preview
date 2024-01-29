@@ -27,8 +27,7 @@
     "@actions/core": "^1.10.1",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.1.1",
-    "@actions/io": "^1.1.3",
-    "hqr": "^0.0.8"
+    "@actions/io": "^1.1.3"
   },
   "git-hooks": {
     "pre-commit": "npm run lint",
