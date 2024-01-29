@@ -44,7 +44,7 @@ export const formatImage = ({
   |  ⌛ Build time | ${buildTime || '...'} |
   |  🚀 Deploy Preview |  ${url} |
   |  📱 Preview on mobile |  <details> <summary>Click me</summary><p><i>Use your smartphone camera to open QR code link.</i></p>![Mobile](${
-    qrUrl || 'https://avatar1.vercel.app/vercel.svg?text=QR'
+    qrUrl || 'https://avatar1.vercel.app/avatar/vercel.svg?text=QR'
   }) </details> |
 `;
 };
