@@ -21,6 +21,7 @@ export const deployPullRequest = async ({
   failOnErrorGlobal = failOnError;
   core.debug(`failOnErrorGlobal: ${typeof failOnErrorGlobal} + ${failOnErrorGlobal.toString()}`);
   let prNumber: number | undefined;
+  let prState: string | undefined;
 
   core.debug('github.context');
   core.debug(JSON.stringify(github.context, null, 2));
@@ -35,17 +36,27 @@ export const deployPullRequest = async ({
   const fromForkedRepo = payload.pull_request?.head.repo.fork;
 
   if (payload.number && payload.pull_request) {
+    core.debug('prNumber retrieved from pull_request');
     prNumber = payload.number;
+    prState = payload.action;
   } else {
-    const result = await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
-      commit_sha: gitCommitSha,
-    });
-    const pr = result.data.length > 0 && result.data[0];
-    core.debug('listPullRequestsAssociatedWithCommit');
-    core.debug(JSON.stringify(pr, null, 2));
-    prNumber = pr ? pr.number : undefined;
+    core.debug('Not a pull_request, so doing a API search');
+    // Inspired by https://github.com/orgs/community/discussions/25220#discussioncomment-8697399
+    const query = {
+      q: `repo:${github.context.repo.owner}/${github.context.repo.repo} is:pr sha:${gitCommitSha}`,
+      per_page: 1,
+    };
+    try {
+      const result = await octokit.rest.search.issuesAndPullRequests(query);
+      const pr = result.data.items.length > 0 && result.data.items[0];
+      core.debug(`Found related pull_request: ${JSON.stringify(pr, null, 2)}`);
+      prNumber = pr ? pr.number : undefined;
+      prState = pr ? pr.state : undefined;
+    } catch (error) {
+      // As mentioned in https://github.com/orgs/community/discussions/25220#discussioncomment-8971083
+      // from time to time, you may get rate limit errors given search API seems to use many calls internally.
+      core.warning(`Unable to get the PR number with API search: ${error}`);
+    }
   }
 
   if (!prNumber) {
@@ -53,7 +64,7 @@ export const deployPullRequest = async ({
     return;
   }
 
-  core.info(`Find PR number: ${prNumber}`);
+  core.info(`Found PR number: ${prNumber}, PR status: ${prState}`);
 
   const commentIfNotForkedRepo = (message: string) => {
     // if it is forked repo, don't comment
@@ -128,7 +139,7 @@ ${getCommentFooter()}
   core.debug(`teardown enabled?: ${teardown}`);
   core.debug(`event action?: ${payload.action}`);
 
-  if (teardown && payload.action === 'closed') {
+  if (teardown && prState === 'closed') {
     try {
       core.info(`Teardown: ${url}`);
       core.setSecret(surgeToken);
